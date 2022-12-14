@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload = "initialize()">
+    <div id="player" class="fighterSection">
+        <div id="name"></div>
+        <div class="stats">
+            <table id = "original">
+                <tr>
+                    <th>Strength</th>
+                    <th>Cunning</th>
+                    <th>Speed</th>
+                    <th>Fatigue</th>
+                </tr>
+            </table>
+
+            <table id="current">
+                <tr>
+                    <th>Strength</th>
+                    <th>Cunning</th>
+                    <th>Speed</th>
+                    <th>Fatigue</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="moveSelection">
+            <button onclick="attack()">Attack</button>
+            <button onclick="defend()">Defend</button>
+            <button onclick="finish()">Finish</button>
+        </div>
+
+        <table id="playerLog" class="log">
+            <tr>
+                <th>Move #</th>
+                <th>Move</th>
+            </tr>
+        </table>
+    </div>
+
+    <div id="computer" class="fighterSection">
+        <div class="stats">
+            <table id = "original">
+                <tr>
+                    <th>Strength</th>
+                    <th>Cunning</th>
+                    <th>Speed</th>
+                    <th>Fatigue</th>
+                </tr>
+            </table>
+
+            <table id="current">
+                <tr>
+                    <th>Strength</th>
+                    <th>Cunning</th>
+                    <th>Speed</th>
+                    <th>Fatigue</th>
+                </tr>
+            </table>
+        </div>
+
+        <table id="computerLog" class="log">
+            <tr>
+                <th>Move #</th>
+                <th>Move</th>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
