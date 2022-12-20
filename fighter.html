@@ -5,22 +5,264 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="fighter.css">
+    <script src="fighter.js"></script>
+    <script>
+        function initialize(){
+            pStatus = document.getElementById("pStatus");
+            pLog = document.getElementById("playerLog");
+            pStr = document.getElementById("playerStrength");
+            pCun = document.getElementById("playerCunning");
+            pSpe = document.getElementById("playerSpeed");
+            pFat = document.getElementById("playerFatigue");
+            pStrength = 6;
+            pCunning = 6;
+            pSpeed = 5;
+            pFatigue = 30 + parseInt(Math.random() * 7);
+            const pOrigFat = pFatigue;
+            pDefending = false;
+
+            cStatus = document.getElementById("cStatus");
+            cLog = document.getElementById("computerLog");
+            cStr = document.getElementById("computerStrength");
+            cCun = document.getElementById("computerCunning");
+            cSpe = document.getElementById("computerSpeed");
+            cFat = document.getElementById("computerFatigue");
+            cStrength = 7;
+            cCunning = 7;
+            cSpeed = 5;
+            cFatigue = 30 + parseInt(Math.random() * 7);
+            const cOrigFat = cFatigue;
+            cDefending = false;
+
+            let pOriginal = document.getElementById("pOriginal");
+            let cOriginal = document.getElementById("cOriginal");
+            pOriginal.innerHTML = "Strength: " + pStrength + " Cunning: " + pCunning + " Speed: " + pSpeed + " Fatigue: " + pFatigue;
+            cOriginal.innerHTML = "Strength: " + cStrength + " Cunning: " + cCunning + " Speed: " + cSpeed + " Fatigue: " + cFatigue;
+            
+            moveCount = 1;
+        }
+
+        function move(move){
+            randomNum = Math.random();
+            let computerMove = "";
+            if (cFatigue >= 2 * pFatigue || pFatigue < 0){
+                computerMove = "finish";
+                if (cFatigue == 2 * pFatigue || pFatigue < 0){
+                    cAttack = (cStrength + cCunning + cSpeed)/(parseInt(Math.random() * 3) + 1);
+                    if (cAttack > pSpeed){
+                        cStatus.innerHTML = "COMPUTER WINS LLLLLLLLLLLLLLLL";
+                    }
+                }
+                logMove("finish", "computer");
+            }
+            else if (randomNum >= 0.5){
+                computerMove = "defend";
+                logMove("defend", "computer");
+            }
+            else {
+                computerMove = "attack";
+                logMove("attack", "computer");
+            }
+
+            if (move == "attack"){
+                logMove("attack", "player");
+                pAttack = (pStrength + pCunning + pSpeed)/(parseInt(Math.random() * 3) + 1);
+                if (computerMove=="defend"){
+                    cDef = cSpeed + cCunning;
+                }
+                else {
+                    cDef = cSpeed + parseInt(Math.random() * 6) + 1;
+                }
+                if (pAttack > cDef){
+                    cFatigue -= pAttack - cDef;
+                }
+                else {
+                    cFatigue += parseInt(Math.random() * 6) + 1
+                }
+                if (computerMove == "attack"){
+                    cAttack = (cStrength + cCunning + cSpeed)/(parseInt(Math.random() * 3) + 1);
+                    pDef = pSpeed + parseInt(Math.random()*6) + 1;
+
+                    if (cAttack > pDef){
+                        pFatigue -= cAttack - pDef;
+                    }
+                    else {
+                        pFatigue += parseInt(Math.random() * 6) + 1;
+                    }
+                }
+            }
+            else if (move == "defend"){
+                logMove("defend", "player");
+                if (computerMove == "attack"){
+                    cAttack = (cStrength + cCunning + cSpeed)/(parseInt(Math.random() * 3) + 1);
+                    pDef = pSpeed + pCunning;
+
+                    if (cAttack > pDef){
+                        pFatigue -= cAttack - pDef;
+                    }
+                    else {
+                        pFatigue += parseInt(Math.random() * 6) + 1;
+                    }
+                }
+                if (computerMove == "defend"){
+                    pFatigue += parseInt(Math.random() * 6) + 1;
+                    cFatigue += parseInt(Math.random() * 6) + 1;
+                }
+            }
+            else if (move == "finish"){
+                logMove("finish", "player");
+                if (pFatigue >= 2 * cFatigue || cFatigue < 0){
+                    console.log("kind of");
+                    pAttack = (pStrength + pCunning + pSpeed)/(parseInt(Math.random() * 3) + 1);
+                    if (pAttack > cSpeed){
+                        pStatus.innerHTML = "YOU WIN";
+                    }
+                }
+                else {
+                    console.log("oof");
+                }
+            }
+            console.log("yo");
+            display();
+        }
+
+        function display(){
+            pStr.innerHTML = pStrength;
+            pCun.innerHTML = pCunning;
+            pSpe.innerHTML = pSpeed;
+            pFat.innerHTML = pFatigue;
+
+            cStr.innerHTML = cStrength;
+            cCun.innerHTML = cCunning;
+            cSpe.innerHTML = cSpeed;
+            cFat.innerHTML = cFatigue;
+        }
+
+        // function pMove(move){
+        //     if (move == "attack"){
+        //         cMove();
+        //         pAttack();
+        //     }
+        //     else if (move == "defend"){
+        //         defend("player");
+        //         cMove();
+        //     }
+        //     else if (move == "finish"){
+        //         if (pFatigue >= 2 * cFatigue || cFatigue < 0){
+        //             finish("player");
+        //         }
+        //     }
+        //     moveCount++;
+        //     display();
+        // }
+
+        // function finish(fighter){
+        //     if (fighter == "player"){
+        //         let pAtt = (pStrength + pCunning + pSpeed)/(parseInt(Math.random() * 3) + 1);
+        //         if (pAtt > cSpeed){
+        //             pStatus.innerHTML = "Player Wins";
+        //         }
+        //         else {
+        //             cFatigue += 1;
+        //         }
+        //     }
+        //     else {
+        //         let cAtt = (cStrength + cCunning + cSpeed)/(parseInt(Math.random() * 3) + 1);
+        //         if (cAtt > pSpeed){
+        //             cStatus.innerHTML = "Computer Wins";
+        //         }
+        //         else {
+        //             pFatigue += 1;
+        //         }
+        //     }
+
+        //     logMove("finish", fighter);
+            
+        // }
+
+        // function cMove(){
+        //     if (cFatigue == 2 * pFatigue || pFatigue < 0){
+        //         finish("computer");
+        //     }
+        //     else if (Math.random() >= .5){
+        //         defend("computer");
+        //     }
+        //     else{
+        //         cAttack();
+        //     }
+        // }
+
+        // function cAttack(){
+        //     let cAtt = (cStrength + cCunning + cSpeed)/(parseInt(Math.random() * 3) + 1);
+        //     let pDef = pDefending == true ? pSpeed + pCunning : pSpeed + parseInt(Math.random() * 6) + 1;
+        //     if (cAtt < pDef){
+        //         pFatigue += parseInt(Math.random() * 6) + 1;
+        //         if (pFatigue > pOrigFat){
+        //             pFatigue = pOrigFat;
+        //         }                
+        //     }
+        //     else{
+        //         pFatigue -= cAtt - pDef;
+        //     }
+        //     pDef = false;
+        //     logMove("attack", "computer");
+        // }
+
+        // function pAttack(fighter){
+        //     logMove("attack", "player");
+        //     if (fighter == "player"){
+        //         let pAtt = (pStrength + pCunning + pSpeed)/(parseInt(Math.random() * 3) + 1);
+        //         let cDef = cDefending == true ? cSpeed + cCunning : cSpeed + parseInt(Math.random() * 6) + 1;
+        //         if (pAtt < cDef){
+        //             cFatigue += parseInt(Math.random() * 6) + 1;
+        //             if (cFatigue > cOrigFat){
+        //             cFatigue = cOrigFat;
+        //             }
+        //         }
+        //         else{
+        //             cFatigue -= pAtt - cDef;
+        //         }
+        //         cDef = false;
+        //     }
+        // }
+
+        // function defend(fighter){
+        //     logMove("defend", fighter);
+        //     if (fighter == "player"){
+        //         pDefending = true;
+        //     }
+        //     else{
+        //         cDefending = true;
+        //     }
+        // }
+
+        function logMove(move, fighter){
+            if (fighter == "player"){
+                let newRow = pLog.insertRow();
+                let newCell = newRow.insertCell();
+                newCell.innerHTML = move;
+            }
+            else{
+                let newRow = cLog.insertRow();
+                let newCell = newRow.insertCell();
+                newCell.innerHTML = move;
+            }
+        }
+        
+    </script>
 </head>
 <body onload = "initialize()">
     <div id="player" class="fighterSection">
-        <div id="name"></div>
-        <div class="stats">
-            <table id = "original">
-                <tr>
-                    <th>Strength</th>
-                    <th>Cunning</th>
-                    <th>Speed</th>
-                    <th>Fatigue</th>
-                </tr>
-                <!-- I want to insert a row in here with the values when it initializes -->
-            </table>
+        <div id="pStatus">
 
-            <table id="current">
+        </div>
+        <div class="stats">
+            <div id = "pOriginal">
+                
+            </div>
+
+            <table class="current">
                 <tr>
                     <th>Strength</th>
                     <th>Cunning</th>
@@ -37,32 +279,28 @@
         </div>
 
         <div id="moveSelection">
-            <button onclick="attack()">Attack</button>
-            <button onclick="defend()">Defend</button>
-            <button onclick="finish()">Finish</button>
+            <button onclick="move('attack')">Attack</button>
+            <button onclick="move('defend')">Defend</button>
+            <button onclick="move('finish')">Finish</button>
         </div>
 
         <table id="playerLog" class="log">
             <tr>
-                <th>Move #</th>
                 <th>Move</th>
             </tr>
         </table>
     </div>
 
     <div id="computer" class="fighterSection">
-        <div class="stats">
-            <table id = "original">
-                <tr>
-                    <th>Strength</th>
-                    <th>Cunning</th>
-                    <th>Speed</th>
-                    <th>Fatigue</th>
-                </tr>
-                <!-- I want to insert a row in here with the values when it initializes -->
-            </table>
+        <div id="cStatus">
 
-            <table id="current">
+        </div>
+        <div class="stats">
+            <div id = "cOriginal">
+            
+            </div>
+
+            <table class="current">
                 <tr>
                     <th>Strength</th>
                     <th>Cunning</th>
