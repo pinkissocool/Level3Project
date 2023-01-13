@@ -6,3 +6,13 @@ body{
 table{
     border: solid black 5px;
 }
+
+div{
+    background-color:yellow;   
+}
+
+button{
+    border: solid black 3px;
+    background-color: red;
+    color:white;
+}
